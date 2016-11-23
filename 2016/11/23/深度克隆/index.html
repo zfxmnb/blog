@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>深度克隆 | fanxblog</title>
+  <meta name="description" content="" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="/css/component.css" />
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <meta name="generator" content="fanxblog">
+  <script src="http://static.duoshuo.com/embed.js"></script>
+  
+  
+  
+
+  
+
+</head>
+<body>
+<div class="container">
+    <div class="mp-pusher" id="mp-pusher">
+        <i id="scroll-up" class="fa fa-angle-up"></i>
+        <nav id="mp-menu" class="mp-menu">
+            <div class="mp-level">
+                <a data-pjax class="back-home" style="font-size: 20px" href="/"><h2 ><i class="fa fa-home"></i>
+                        Home</h2></a>
+                <ul class="first-level">
+                    <li>
+                        <a class="fa fa-archive" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Archive</a>
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-archive"></i>
+                                Archive</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-archive" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2016/11/23/深度克隆/">深度克隆</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/2016/11/23/my-frist/">重排与重绘</a>
+                                </li>
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="fa fa-copy" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Categories</a>
+
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-copy"></i>
+                                Categories</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-category" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="fa fa-tags" href="#"><i class="fa fa-angle-left">
+                            </i>&nbsp;&nbsp;Tags</a>
+                        <div class="mp-level page-list">
+                            <h2 ><i class="fa fa-tags"></i>
+                                Tags</h2>
+                            <a class="mp-back" href="#">back</a>
+                            <form id="search-form" action="">
+                                <input type="text" class="search search-tag" placeholder="Search.."/>
+                            </form>
+                            <ul>
+                                <div class="mp-scroll">
+                                
+                                <li class="search-tag-li mp-pjax">
+                                    <a href="/tags/javascript/">&nbsp;&nbsp;&nbsp;javascript</a>
+                                    <small>1</small>
+                                </li>
+                                
+                                </div>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li class="mp-pjax"><a class="fa fa-user" href="/about">&nbsp;&nbsp;&nbsp;About me</a></li>
+                    <li><a class="fa fa-github" href="#">&nbsp;&nbsp;&nbsp;Github</a></li>
+
+                </ul>
+
+            </div>
+        </nav>
+        <div id="pjax">
+            <div class="pjax-hidden" style="display: none">
+                
+                    <a  data-pjax href="/2016/11/23/深度克隆/">深度克隆</a>
+                
+                    <a  data-pjax href="/2016/11/23/my-frist/">重排与重绘</a>
+                
+                
+                
+                    <a data-pjax href="/tags/javascript/">&nbsp;&nbsp;javascript</a>
+                
+                <a data-pjax class="fa fa-user" href="/about">&nbsp;&nbsp;&nbsp;About me</a>
+            </div>
+            <nav class="nexus">
+                <li  style="border-left: 1px solid #c6d0da;">
+                    <a id="trigger" href="#"><i class="fa fa-bars"></i></a>
+                </li>
+                <li ><a id="nexus-back" data-pjax href="/">fanxblog</a></li>
+                
+                <div id="nav-container">
+                    <div class="post-navbar" style="line-height: 63px;display:none">
+                        <li id="navbar-title"><a href="#">深度克隆</a></li>
+                        <li id="navbar-toc" style="border-left: none">
+                            <a style="padding-right: 15px">
+                                <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
+                            </a>
+                            <div class="hidden-box">
+                                <ul id="toc"></ul>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+                
+            </nav>
+
+            <div class="scroller">
+            <div class="scroller-inner">
+
+
+<!-- -->
+<!--<body class="post-template">-->
+<!---->
+  
+
+<main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">深度克隆</h1>
+
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-11-23T08:30:46.000Z"
+                              itemprop="datePublished">2016-11-23</time>
+                    </div>
+    </span>
+
+        <section class="post-content">
+            <p>在前端领域说到克隆大家首先想到的是jquery中的对象克隆<code>clone()</code>,我们通常会使用这个方法把标签对象克隆后再加到页面的某个位置，直接使用<code>$(selector).clone();</code>这种方法的话只能克隆标签的结构和样式，而不能克隆对象的事件方法，当然jquery已经在我们之前想到了这个问题，在jquery中可以使用<code>$(selector).clone(&#39;deep&#39;);</code>克隆对象，这样克隆的对象的属性方法都会和被克隆对象的属性方法一样，在jquery中我们可以用这个方法完美克隆jquery的对象，那么问题来了，js中的对象如何做到深度克隆，如果不深度克隆会有什么影响。</p>
+<p>在js中的对象主要有标签对象以及JSON数据对象，那么使用深度和不使用深度克隆有什么不一样，接下来就下面例子来分析为什么要深度克隆。</p>
+<p><pre id="js">            var o1={},o2={};<br>            o1.x=1;<br>            o1.y=function(){return 1};<br>            o2=o1;</pre></p>
+<pre><code>console.log(o2.x);// 1
+console.log(o2.y());// 1
+
+o2.x=2;
+o2.y=function(){return 2};
+
+console.log(o1.x); // 2
+console.log(o1.y()); // 2&lt;/pre&gt;
+</code></pre><p><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"></p>
+<p>WTF,怎么会有这种事情，没错这种现象确实存在，这就是我们为什么有时候需要深度克隆的原因，至于为什么会这样，我猜可能是因为这样直接赋值的话导致两个对象共用同一个内存空间，无论那个对象的属性方法发生改变都将会影响另外一个对象。</p>
+<p>那么如果需要深度克隆是应该怎么做，之前的<code>o2=o1</code>这种方式是行不通的，<code>o2.x=o1.x  o2.y=o1.y</code>这种方式是有用的，如果使一些简单的对象我们可以直接简单的用这种方法实现深度克隆。如果是一个复杂多层的对象要实现深度克隆就需要费一些周章了。</p>
+<p><pre id="js">           function OType(o){<br>                if(o= =null) return “Null”;<br>                if(o= =undefined) return “Undefined”;<br>                return Object.prototype.toString.call(o).slice(8,-1);<br>           }<br>           function deepClone(obj){<br>                var result,oClass=OType(obj);<br>                if(oClass = = “Object”){<br>                    result={};<br>                }else if(oClass = = “Array”){<br>                    result=[];<br>                }else{<br>                    return obj;<br>                }<br>                for(key in obj){<br>                    var copy=obj[key];<br>                    if(OType(copy)==”Object”||OType(copy)= =”Array”){<br>                        //result[key]=deepClone.call(“”,copy);<br>                        result[key]=arguments.callee(copy);<br>                     }else{<br>                        result[key]=obj[key];<br>                    }<br>                }<br>                return result;<br>           }</pre><br>在这段代码中OType方法目的是为了获取确定对象内部数据的类型，<code>Object.prototype.toString.call(o)</code>取到的是一个字符串格式为<code>[Object ?]</code>，?就是我们要的类型字符串，通常有<code>Object,Function,String,Number</code>等等，在deepClone方法中使用OType的次数会比较多。在deepClone中里面首先判断obj的类型，这样返回的对象一个初始类型，例如：如果是类型为”Object”<code>result={}</code>。再下面就是对对象的循环赋值，这里的循环要进行判断，如果属性对象或者数组的话这需要在次执行deepClone方法一遍，这样才能确保对象深度克隆，如果属性不是对象或者数组的话就无需这个步骤，直接用等号赋值即可，最后返回的result就是克隆的结果。</p>
+<p>在这段代码中有两个关键的地方，一是call的使用，二是arguments的含义及与之配套的callee方法的使用。call的使用在<a href="/jquerychu-ji-pian/">jQuery解析初级篇</a>中有这方面的介绍，想要了解的话可以去看一下；<code>arguments.callee(copy)</code>在这里是调用了自身的方法，这种方式在程序中叫做<code>递归</code>,argument指的就是当前执行的方法，在这里当前方法就是deepClone，而callee与call也是非常的相似，call第一个参数是传给方法中this的，第二个开始才是传参，而callee第一个参数既是传参。</p>
+
+        </section>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
+            
+            <a style="cursor:default" class="newer-posts" href="#">This is the First Post</a>
+            
+            <a class="share-button" data-original-title title>Share this Post</a>
+            
+            <a data-pjax class="older-posts" href="/2016/11/23/my-frist/">Next Post →</a>
+            
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
+        </section>
+
+
+    </article>
+</main>
+
+
+  
+<footer class="site-footer">
+    
+    <div class="inner">
+        <section class="copyright"><a href="/"></a> &copy; fanxblog 2014</section>
+        <section class="poweredby">Published with <a target="_blank" href="http://hexo.io/">Hexo   </a> and Theme by <a target="_blank" href="https://github.com/yuche/hexo-theme-kael">Kael</a></section>
+    </div>
+</footer>
+</div>
+</div><!-- /scroller -->
+
+</div><!-- /pusher -->
+</div><!-- /container -->
+</div>
+
+<!-- Easter eggs -->
+
+<div class="egg animated">
+    <a id="close-button" href="#">X</a>
+    <div class="block">
+        <div class="loading">
+            <span class="ball1"></span>
+            <span class="ball2"></span>
+        </div>
+    </div>
+</div>
+  
+<script src="//cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+<script>
+    if (!window.jQuery) {
+        var script = document.createElement('script');
+        script.src = "/js/jquery.min.js";
+        document.body.appendChild(script);
+    }
+</script>
+<script type="text/javascript" src="/js/lib.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+
+
+
+
+
+
+</body>
+</html>
