@@ -40,7 +40,7 @@ function  duoshuoInlineComment(){
         var self = $(this);
         $(this).attr('id','comment' + i );
         var identifier =  postTitle + $(this).attr('id');
-        var jsonURL = 'http://api.duoshuo.com/threads/counts.jsonp?short_name=' +
+        var jsonURL = 'https://api.duoshuo.com/threads/counts.jsonp?short_name=' +
             duoshuoName + '&threads=' + identifier +
             '&callback=?';
         $.getJSON(jsonURL,function(data) {
@@ -160,7 +160,7 @@ var kaelEggCombo = kaelEgg.sequence_combo("q w e r", function() {
     lives = 0.8;
     $('.block').show();
     $('.egg').addClass('bounceIn').removeClass('bounceOut');
-    $('.egg').append('<iframe id="egg-frame" style="display: none;margin-top:0;" src="http://kael.qiniudn.com/" frameborder="0" width="100%" height="700px" scrolling="no">');
+    $('.egg').append('<iframe id="egg-frame" style="display: none;margin-top:0;" src="https://kael.qiniudn.com/" frameborder="0" width="100%" height="700px" scrolling="no">');
 //    iframe onload taken from http://www.nczonline.net/blog/2009/09/15/iframes-onload-and-documentdomain/
     var iframe = document.getElementById('egg-frame');
     if (iframe.attachEvent){
@@ -220,13 +220,13 @@ function afterPjax() {
 
     $('.share-button').popover({
         placement: 'bottom',
-        content: '<a target="_blank" href="http://service.weibo.com/share/share.php?url=' +
+        content: '<a target="_blank" href="https://service.weibo.com/share/share.php?url=' +
             postHref + "&title=" + postTitle +
             '"><i  class=" fa share-icon fa-weibo fa-2x"></i></a>' +
-            '<a target="_blank" href="http://widget.renren.com/dialog/share?resourceUrl=' +
+            '<a target="_blank" href="https://widget.renren.com/dialog/share?resourceUrl=' +
             postHref + "&title=" + postTitle +
             '"><i class="fa share-icon fa-renren fa-2x"></i></a>' +
-            '<a target="_blank" href="http://twitter.com/share?url=' +
+            '<a target="_blank" href="https://twitter.com/share?url=' +
             postHref +
             '"><i class="fa share-icon fa-twitter fa-2x"></i></a>' +
             '<a target="_blank" href="https://plus.google.com/share?url=' +
