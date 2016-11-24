@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>jquery事件绑定 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">jquery事件绑定</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,113 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-jQuery/' style='color:#D5D5D5'>网站开发 jQuery</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">jquery事件绑定</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-07-14T09:30:51.000Z"
+                              itemprop="datePublished">2016-07-14</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>jquery的版本更新历程中，有很多方法发生了改变，其中包括我们最常见的绑定事件方法。说到绑定事件方法就不得不提到jquery的两个版本，1.70版本和1.90版本，在这两个版本中jquery的绑定事件方法发生了一下改变。</p>
+<p>在1.70版本中首次引进了<code>on</code>方法，on方法是所有事件绑定方法中最强大的。至于他为什么是最强大的呢，后面会详细讲到。之前说到另一个jquery版本1.90，这个版本把<code>live</code>方法从绑定事件方法家族中驱逐出去，这是在jquery以往的升级中很少出现的这种把一个已有的方法去掉的情况，因为这样会导致升级后项目出现错误。其实除了这两种方法外还有几种事件绑定方法。它们分别是<code>bind</code>、<code>delegate</code>、<code>one</code>.</p>
+<p>那现在就来看一下上面这五种方法有哪些相似和差异。</p>
+<p><pre id="html"><div class="div1"><br>    </div><br></pre></p>
+<pre><code>&lt;div class=&quot;div2&quot;&gt;
+&lt;/div&gt;&lt;br&gt;
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+&lt;div class=&quot;div3&quot;&gt;
+    &lt;button class=&quot;delegate&quot;&gt;delegate点击按钮&lt;/button&gt;
+&lt;/div&gt;&lt;br&gt;
+
+&lt;div class=&quot;div4&quot;&gt;
+    &lt;button class=&quot;bind&quot;&gt;bind点击按钮&lt;/button&gt;
+    &lt;button class=&quot;test&quot;&gt;test点击按钮&lt;/button&gt;
+&lt;/div&gt;&lt;br&gt;
+
+&lt;div class=&quot;div5&quot;&gt;
+    &lt;button class=&quot;one&quot;&gt;one点击按钮&lt;/button&gt;
+&lt;/div&gt;&lt;/pre&gt;
+</code></pre><p><pre id="html"> //动态添加on和off按钮<br>    $(“.div3”).click(function(){<br>        $(“.div1”).html(‘<button class="on">on点击按钮</button>‘);<br>        $(“.div2”).html(‘<button class="live">live点击按钮</button><button class="test">test点击按钮</button>‘)<br>    });</pre></p>
+<pre><code>//on事件绑定方法
+$(&quot;.div1&quot;).on(&quot;click&quot;,&quot;.on&quot;,data1=&quot;zfx1&quot;,function(){
+     console.log(&quot;this:&quot;+$(this).attr(&quot;class&quot;));    //this:on
+    console.log(&quot;data:&quot;+data1);                     //data:zfx1
+});
+
+//live事件绑定方法
+$(&quot;.div2&quot;).live(&quot;click&quot;,&quot;.live&quot;,function(){
+     console.log(&quot;this:&quot;+$(this).attr(&quot;class&quot;));    //this:div2
+ });
+$(&quot;.div2 .test&quot;).live(&quot;click&quot;,&quot;.test&quot;,function(){
+     console.log(&quot;this is test&quot;);                   //this is test
+                                                    //this:div2
+ });
+
+//delefate
+$(&quot;.div3&quot;).delegate(&quot;.delegate&quot;,&quot;click&quot;,data2=&quot;zfx3&quot;,function(){
+    console.log(&quot;this:&quot;+$(this).attr(&quot;class&quot;));     //this:delegate
+    console.log(&quot;data:&quot;+data2);                     //data:zfx3
+});
+
+//bind事件绑定方法
+$(&quot;.div4&quot;).bind(&quot;click&quot;,&quot;.bind&quot;,function(){
+    console.log(&quot;this:&quot;+$(this).attr(&quot;class&quot;));     //this:div4
+});
+$(&quot;.div4 .test&quot;).click(function(){
+     console.log(&quot;this is test&quot;);                   //this is test
+                                                    //this:div4
+ });
+
+//one单次事件绑定方法
+$(&quot;.div5&quot;).one(&quot;click&quot;,&quot;.one&quot;,data3=&quot;zfx5&quot;,function(){
+     console.log(&quot;this:&quot;+$(this).attr(&quot;class&quot;));    //this:one
+    console.log(&quot;data:&quot;+data3);                     //data:zfx5
+ });&lt;/pre&gt;
+</code></pre><p>总结上面代码的运行结果可以把这些绑定事件方法特点总结一下。</p>
+<p><code>on</code>方法是比较最新的事件绑定方法，它结合了其他几种方法的优点同时也抛掉了其他几种方法的一些缺点，比如，它有<code>live</code>方法的元素预绑定功能又可以像<code>delegate</code>方法一样向函数里面传入值，虽然这个功能用的比较少，但是好像确实有点鸡肋，同时在函数通过<code>$(this)</code>获取的当前对象是方法选择的对象，而不是选择器对象。</p>
+<p><code>live</code>方法最主要的功能是预绑定，这个方法在<code>jquery1.9.0</code>之前可以使用的，之后就由<code>on</code>方法代替，这样导致很多项目不能升级到最新的jquery版本，那为什么还要坚持去除这一方法呢，这不得不说<code>live</code>的另一个特点，它绑定事件的方法类似<code>bind</code>,<code>bind</code>方法对一个对象绑定事件是对选择的对象及其子元素分别绑定事件，<code>live</code>也是一样，而预绑定会占用浏览器性能，这就导致了它的预绑定的性能远远不如<code>on</code>方法。</p>
+<p><code>delegate</code>方法则比较像<code>on</code>方法，除了不能像<code>on</code>一样预绑定事件外，其他特点几乎和<code>on</code>一样。</p>
+<p><code>bind</code>方法前面已经说了它的一个最重要的特点就是对选择的对象及其子元素分别绑定事件，这样的功能其实在很多时候还是可以用上的，它的另一个特点就是不能向函数里面传入参数，但个人觉得这无关紧要。</p>
+<p>最后要说的是单次绑定事件方法<code>one</code>方法，这个方法可以只触发一次事件，这个方法的运用场景非常多，这里就不多做介绍，这个方法除了这个特点就是它的其他功能和<code>on</code>方法一模一样。</p>
+<p>除了这些绑定事件的方法还有对应绑定事件对应的解绑事件方法，作用都是对已绑定的事件的对象清除绑定，让事件失效，具体的有哪些解绑方法和它们的对应关系这里就不多做详细说明。</p>
+<p>最后真诚的希望各位能够给我提宝贵的意见，互相帮助互相学习。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/07/20/web上传图片原理/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/07/03/javascript原型/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

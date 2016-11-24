@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>web上传图片原理 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">web上传图片原理</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,69 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-nodeJS/' style='color:#D5D5D5'>网站开发 nodeJS</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">web上传图片原理</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-07-20T09:30:39.000Z"
+                              itemprop="datePublished">2016-07-20</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>说到网页中上传图片，通常会使用想到表单input[type=file]的方式上次图片，但是有多少人并不知道在这个过程中浏览器和服务器对图片数据是怎样处理的，在这篇文章里我将对上传图片的过程进行一些简单的描述，有什么不对的地方还望指教。</p>
+<p>我们通常用<code>&lt;input type=&quot;file&quot;&gt;</code>在网页上打开本地文件预览，然后选着上传文件，然后通过表单提交吧图片信息提交到服务器，异或者是通过Ajax或者iframe提交数据，后者可以不用刷新页面也可以提交数据，前面说到这样的方式是提交文件信息其中包括文件的路径、文件名、文件类型、文件大小等关键信息，其中不包括文件的数据，服务器要获取文件数据需要通过路径去读取，这个读取的过程就是文件上传的实现，这个上传的全过程不是一次性提交完成的，而是提交一个过程，读取一个过程，这个全过程是一个典型的文件上传过程，但这并不是现在我要说的图片上传方式，把打开的图片转化为可传输的base64数据格式，在通过表单或者ajax或者通过iframe上传，传输方式通常选择post,因为post要上传的数据要比get所能上传数据要大得多；而把数据传输到服务器端后，服务器就把接收到的base64数据通过处理后已特定的名称保存在特定的文件夹下，这就是另一种上传图片的的全过程，这种上传图片的方法相较与典型的上传方法要更直接些，但这不能说它就比前者要更有优势，因为这种方式上次的只是图片的基本数据，没有过多的诸如文件名文件大小等信息，但现在HTML5越来越普及，浏览器器可调用的资源更多了，其中与图像相关的有canvas绘图、摄像头拍摄，canvas绘制的图像和摄像头拍摄图片需要上传到服务器这不能用之前的典型上传方式，因为它们都是没有路径的，只能通过base64数据格式的上传，说了这么多base64数据格式的图片上传下面来说一下关键性的代码。</p>
+<p>首先来说一下前端的实现，前端部分包括图片数据的处理和上传数据两个步。</p>
+<p>第一步，把图片数据处理成base64数据格式，这里处理相对较复杂，其实使用html5 API把本地的图片转化为base64并不复杂，但是万恶的IE偏偏出来和我们作对，相信前端最想看到的并不是世界和平，而是全世界的IE浏览器都坏掉。<img src="http://www.iefans.net/wp-content/uploads/2013/11/810b_22.jpg"></p>
+<p>利用html API把图片转化为base64.</p>
+<pre id="html"> var render=new FileReader();
+      document.getElementById("file").onchange=function(){
+                var file=this;
+                file=this.files[0];
+                render.readAsDataURL(file);
+                render.onload=function(){
+                    console.log(this.result); //base64数据
+                }
+            }</pre>
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+<p>利用ActiveXObject把图片转化为base64</p>
+<p><pre id="html"><br>var b=window.navigator.userAgent,kn;<br>var activeXObj;<br>var activeXNameList=new Array(“Msxml2.XMLHTTP.6.0”,”Msxml2.XMLHTTP.5.0”,”Microsoft.XMLHTTP”,”Msxml2.XMLHTTP.4.0”,”Msxml2.XMLHTTP.3.0”,”Msxml2.XMLHTTP”,”Microsoft.XMLHTTP”);<br>            for(var h=0;h &lt; activeXNameList.length;h++){<br>                try{<br>                   activeXObj=new ActiveXObject(activeXNameList[h]);<br>                }catch(e){<br>                   continue;<br>                }<br>                if(activeXObj) break;<br>            }<br>            activeXObj.onreadystatechange=function(){<br>                if(activeXObj.readyState &lt; 4) return;<br>                var xml_dom=new ActiveXObject(“MSXML2.DOMDocument”);<br>                var tmpNode=xml_dom.createElement(“tmpNode”);<br>                tmpNode.dataType=”bin.base64”;<br>                tmpNode.nodeTypedValue= activeXObj.responseBody;//aa.Read(-1);<br>                var base64Data=tmpNode.text.replace(/\n/g,””);<br>                var imgData=”data:image/“+kn+”;base64,”+base64Data;<br>                console.log(imgData);<br>            }<br> document.getElementById(“file”).onchange=function(){<br>                var arr;<br>                arr=this.value.split(“.”);<br>                kn=arr[arr.length-1];<br>                activeXObj.open(“GET”,this.value,true,””,””);//常报错<br>                activeXObj.send(“”);<br>            }</pre><br>以上两个方法后可以获取到图片的base64数据，html5方法适用IE10以上的浏览器，所以IE9一下的浏览器就必须借助IE专有的ActiveX来获取，但是这种方法在实际操作中经常会报错，无法打开图片文件，这可能是和系统或者浏览器有关系。</p>
+<p>最后来看一下服务器要如何处理base64数据，因为对nodeJs比较熟悉所以这里就以nodeJs为例。</p>
+<p><pre id="js">var express = require(‘express’);<br>var router = express.Router();<br>var multipart = require(‘connect-multiparty’);//以enctype=”multipart/form-data”上传的数据需要加入这个模块<br>var fs = require(“fs”);//加载fs文件处理模块<br>var multipartMiddleware = multipart();<br>router.post(‘/‘,multipartMiddleware,function(req,res){<br>                var b64=req.body.pp1.replace(/^data:image\/\w+;base64,/,””);<br>                var dataBuffer=new Buffer(b64,”base64”);//把base64保存在缓存中，在html5中也有这个类<br>                fs.writeFile(“public/images/“+req.name,dataBuffer);//这一步把图片保存在public/images/这个目录下<br>})<br>module.exports = router;<br></pre><br>最后真诚的希望各位能够给我提宝贵的意见，互相帮助互相学习。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/07/21/Canvas-对图片加水印/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/07/14/jquery事件绑定/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

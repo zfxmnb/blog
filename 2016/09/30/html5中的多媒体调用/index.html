@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>html5中的多媒体调用 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">html5中的多媒体调用</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,54 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-H5/' style='color:#D5D5D5'>网站开发 H5</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">html5中的多媒体调用</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-09-30T09:26:42.000Z"
+                              itemprop="datePublished">2016-09-30</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>html5是近几年W3C推出的新一代的html的标准，这一标准在2008年正式起草，2012年正式正式定稿，然后再两年内有对其进行不断地修改，直到2014年10月29日正式发布了这一新的html标准，当然这还不是终点，从正式发布到现在甚至在今后的很长一段时间html5还会不断的修改完善。</p>
+<p>html5的出现增加了很多功能，也优化了性能，不仅方便了看法，也使得网页更加丰富多彩。html5的网页多媒体特性使得浏览器可以支持Audio、Video等多媒体功能，以及调用摄像头麦克风，这也正是这篇文章说要讲的内容，接下来就来看一些在浏览器中是如何调用设备的摄像头和麦克风的。</p>
+<p><pre id="js">var video=document.getElementById(‘video’);<br>var canvas=document.getElementById(‘canvas’);<br>navigator.getUserMedia=navigator.mozGetUserMedia||navigator.webkitGetUserMedia||navigator.msGetUserMedia||navigator.getUserMedia;<br>window.URL=window.URL||window.webkitURL||window.mozURL||window.msURL;<br>if(navigator.getUserMedia){<br>    var err=function(){<br>        console.log(“无法使用摄像功能”);<br>    }<br>   navigator.getUserMedia({“video”:true,”audio”:true},function(stream){<br>    if(video.mozSrcObject!==undefined){<br>            video.mozSrcObject=stream;<br>    }else{<br>            video.src=(window.URL&amp;&amp;window.URL.createObjectURL(stream))||stream;<br>    }<br>    var W=video.offsetWidth,H=video.offsetHeight;<br>    setTimeout(function(){<br>        var w=video.offsetWidth,h=video.offsetHeight;<br>        canvas.style.width=w/3+”px”;canvas.style.height=h/3+”px”;<br>        video.style.width=w+”px”;video.style.height=h+”px”;<br>        var ctx=canvas.getContext(“2d”);<br>        document.getElementById(‘shortCut’).onclick=function(){<br>            ctx.drawImage(video,0,0,W,H);<br>            //x=canvas.toDataURL();<br>        }<br>        //setInterval(function(){document.getElementById(‘shortCut’).onclick()},100)<br>    },500);<br>   },err);<br>}</pre><br>可以看到在这段js中有这么一段<code>navigator.getUserMedia=navigator.mozGetUserMedia||navigator.webkitGetUserMedia||navigator.msGetUserMedia||navigator.getUserMedia;</code>，这一段的作用是获得navigator对象的getUserMedia，由于不同浏览器的getUserMedia方法可能不一样，所以就需要这样写一大串做不同浏览器的兼容；再往后看又有一段这样的代码<code>window.URL=window.URL||window.webkitURL||window.mozURL||window.msURL;</code>,这个window.URL的对象中方法的作用是从设备的本地获取到的文件或者是通过摄像头麦克风获取到的二进制流转化为浏览器可以识别的对象；<code>navigator.getUserMedia({&quot;video&quot;:true,&quot;audio&quot;:true},function(stream){});</code>，这么一段的代码就是navigator.getUserMedia这个调用多媒体的方法的使用，得到的是一个流stream，这种数据流需要经过一定的处理才能在浏览器器重显示，由于浏览器的不同对流的处理方式也不同，这里有三种处理方式：1、在火狐浏览器中直接传值给video对象的mozSrcObject属性；2、通过之前处理的window.URL对象的<code>createObjectURL(stream)</code>转化stream，在传给video对象的src属性；3、当浏览器不支持window.URL对象是直接传值给video.src。但是经测试在新版的火狐浏览器中使用非火狐专用方法也能成功调用浏览器多媒体功能。在这段代码中后面一段代码是使用canvas对摄像头捕获的图像进行拍照，原理就是和使用canvas捕获图片是一样的关键代码就一句<code>ctx.drawImage(video,0,0,W,H);</code>。</p>
+<p>最后，请不要试图使用低版本的IE去使用html5，即使较新版本的IE对html5的支持也是非常的吝啬的，而IE8以下就不必说了，如果你是做开发的在兼容低版本的ie的时候对于莫名其妙的bug，只想说:What the fuck。郑重的奉劝大家一句，珍爱生命，远离IE.</p>
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/10/11/深度克隆对象/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/09/21/jquery滚动条插件scrollbar/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

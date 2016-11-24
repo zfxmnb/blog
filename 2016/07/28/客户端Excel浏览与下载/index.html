@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>客户端Excel浏览与下载 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">客户端Excel浏览与下载</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,86 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-下载/' style='color:#D5D5D5'>网站开发 下载</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">客户端Excel浏览与下载</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-07-28T09:30:00.000Z"
+                              itemprop="datePublished">2016-07-28</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>Excel文件的上传与下载在网站上使用的场景并不多，主要是在一些web管理后台上比较常使用到，在这样的网站上传Excel文件方便的的批量上传数据，前提是把所要的数据以一定的表格格式存在Excel文件；而下载Excel文件可以把想要的的数据保存在在Excel表格中方便统计与查看。</p>
+<p>在这篇文章中将要介绍如何通过浏览器JavaScript在浏览器浏览Excel表格，又如何下载网页上原有的table表格，并且今天还要给IE正名，IE浏览器也不是一无是处的。</p>
+<p>首先是html部分</p>
+<p><pre id="html"><input type="file" value="excel上传" id="file"></pre></p>
+<p><table id="test"><br>    <tr><td>1</td><td>12</td></tr><br>    <tr><td>2</td><td>22</td></tr><br></table><br><a href="javascript:void(0);" class="download" download="" target="_blank" rel="external">下载</a><br><br>上传部分Excel只能使用ActiveXObject(“Excel.application”)对象在浏览器中显示Excel表格，而在非IE浏览器中因为不支持ActiveXObject主件对象，所以也不能在浏览器中预览Excel表格，现在IE终于有一方面比其他非IE浏览器强的地方，为了更好的兼容性，在多内核的浏览器中设置默认使用内核为IE内核，设置代码在上面出现过<code>&lt;meta name=&quot;renderer&quot; content=&quot;ie-stand&quot;&gt;</code>,在这里设置的多内核浏览器为IE标准模式，这种模式下选择内核是IE9以上的IE内核，除了标准模式还可以通过上面方法选择兼容模式，浏览器的兼容模式是使用IE7内核作为默认内核，设置代码为<code>&lt;meta name=&quot;renderer&quot; content=&quot;ie-comp&quot;&gt;</code>。下面就来看看IE是如何浏览Excel表格：</p>
+<p><pre id="js"> //IE上传<br>    function read_excel(path){<br>        var filePath=path,sheet=””,temp_Str=””;<br>        try{<br>            var oXL = new ActiveXObject(“Excel.application”); //创建Excel.Application对象<br>        }catch(err){<br>            alert(err);<br>        }<br>        var oWB = oXL.Workbooks.open(filePath);<br>        //循环输出sheet<br>        for(var sheet_id=1;sheet_id&lt;=oXL.Sheets.Count;sheet_id++){<br>            var temp_Str=””;<br>            oWB.worksheets(sheet_id).select();<br>            var oSheet = oWB.ActiveSheet;<br>            var rowcount=oXL.Worksheets(sheet_id).UsedRange.Cells.Rows.Count ;<br>            var colcount=oXL.Worksheets(sheet_id).UsedRange.Cells.Columns.Count;<br>            //循环Excel表中行<br>            for(var i=1;i&lt;=rowcount;i++){<br>                var temp_Row=””;<br>                //循环Excel表行中列<br>                for(var j=1;j&lt;=colcount;j++){<br>                    var temp_data=””;<br>                    if (typeof(oSheet.Cells(i,j).value)==’date’){ //单元格内容是日期格式时的读取问题<br>                        d= new Date(oSheet.Cells(i,j).value);<br>                        temp_data=d.getFullYear()+”-“+(d.getMonth() + 1)+”-“+d.getDate();<br>                    }else{<br>                        temp_data=$.trim(oSheet.Cells(i,j).value);<br>                    }</pre></p>
+<pre><code>                temp_Row+=&quot;&lt;td&gt;&quot;+temp_data+&quot;&lt;/td&gt;&quot;;
+            }
+            temp_Str+=&quot;&lt;tr&gt;&quot;+temp_Row+&quot;&lt;/tr&gt;&quot;;
+        }
+        sheet+=&quot;&lt;caption align=&apos;top&apos;&gt;&quot;+oXL.Worksheets(sheet_id).Name+&quot;&lt;/caption&gt;&lt;table id=&apos;&quot;+oXL.Worksheets(sheet_id).Name+&quot;&apos; border=1 cellpadding=10&gt;&quot;+ temp_Str+&quot;&lt;/table&gt;&lt;a href=&apos;javascript:void(0);&apos; class=&apos;download&apos; download&gt;&quot;+oXL.Worksheets(sheet_id).Name+&quot;&lt;/a&gt;&quot;; 
+    }
+    return sheet;
+    oXL.Quit();
+    CollectGarbage();//清除内存
+}&lt;/pre&gt;
+</code></pre><p>上面就是IE内核下的Excel表格浏览代码，下面带来的是在浏览器上下载table表格：</p>
+<p><pre id="js">//IE下载，通过打开一个窗口在新的窗口保存Excel<br>    function saveCode(obj,name){<br>        var winname = window.open(‘’, ‘_blank’, ‘top=10000’);<br>        var strHTML = document.all(obj).outerHTML;<br>        winname.document.open(‘text/html’, ‘replace’);<br>        winname.document.writeln(strHTML);<br>        winname.document.execCommand(‘saveas’,’’,name+’.xls’);<br>        winname.close(); //关闭<br>    }<br>    //IE下载，通过ActiveXObject(“Excel.Application”)打开Excel并把table复制到Excel中在手工保存<br>    function toExcel(id){<br>        window.clipboardData.setData(“Text”,document.all(id).outerHTML);<br>        try<br>        {<br>            var oXL = new ActiveXObject(“Excel.Application”);<br>            var ExWBk = oXL.workbooks.add();<br>            var ExWSh = ExWBk.worksheets(1);<br>            oXL.DisplayAlerts = false;<br>            oXL.visible = true;<br>        }<br>        catch(e){<br>            alert(e.message);<br>            return false;<br>        }<br>        ExWBk.worksheets(1).Paste;<br>    } </pre></p>
+<pre><code>//非IE保存Excel
+var tableToExcel = (function() {
+  var uri = &apos;data:application/vnd.ms-excel;base64,&apos;,
+  template = &apos;&lt;html xmlns:o=&quot;urn:schemas-microsoft-com:office:office&quot; xmlns:x=&quot;urn:schemas-microsoft-com:office:excel&quot; xmlns=&quot;http://www.w3.org/TR/REC-html40&quot;&gt;&lt;head&gt;&lt;!--[if gte mso 9]&gt;&lt;xml&gt;&lt;x:ExcelWorkbook&gt;&lt;x:ExcelWorksheets&gt;&lt;x:ExcelWorksheet&gt;&lt;x:Name&gt;{worksheet}&lt;/x:Name&gt;&lt;x:WorksheetOptions&gt;&lt;x:DisplayGridlines/&gt;&lt;/x:WorksheetOptions&gt;&lt;/x:ExcelWorksheet&gt;&lt;/x:ExcelWorksheets&gt;&lt;/x:ExcelWorkbook&gt;&lt;/xml&gt;&lt;![endif]--&gt;&lt;/head&gt;&lt;body&gt;&lt;table&gt;{table}&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;&apos;,
+    base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+    format = function(s, c) {
+        return s.replace(/{(\w+)}/g,function(m, p) { return c[p]; }) ;
+    }
+    return function(table, name,a) {
+        if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {worksheet: name || &apos;Worksheet&apos;, table: table.innerHTML}
+        window.location.href = uri + base64(format(template, ctx));  
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+  }
+})()   &lt;/pre&gt;
+</code></pre><p>这些方式我也是在网上找到的，前面的IE浏览Excel，以及后面IE保存Excel的两种方法都比较好理解，但最后一个使用非IE的保存方法较为抽象，以我的理解就是先把表格数据嵌入template的格式，再把这种格式的字符串通过encodeURIComponent()编码unescape()解码和.btoa()转化为base64数据，然后通过类似于HTML5下载的形式把表啊个保存下来。</p>
+<p>最后来看一看这些方法是如何使用的：</p>
+<p><pre id="js">    if(document.all){<br>        document.getElementById(“file”).onchange=function(){<br>            document.getElementsByTagName(‘body’)[0].innerHTML=read_excel(this.value);<br>            $(“.download”).one(“click”,function(index){<br>                saveCode($(this).prev(“table”).attr(“id”),”test”);<br>               //toExcel($(this).attr(“id”));<br>            })<br>        }<br>    }else{<br>        $(“.download”).on(“click”,function(index){<br>           $(this).attr(“href”,tableToExcel(“test”,”sheet1”));<br>            //console.log(this.result);<br>        })<br>    }</pre><br>最后还要说明在toExcel()方法使用时必须要已安装Excel软件，所以建议在IE中使用saveCode()方法保存，<code>&lt;!--[if gte mso 9]&gt;&lt;![end]--&gt;</code>以为Excel版本大于等于2000则加入中间的代码。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/02/AngularJs入门/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/07/22/优雅的Sublime-Text/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

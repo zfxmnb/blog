@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>js的事件绑定与解绑 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">js的事件绑定与解绑</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,61 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-js/' style='color:#D5D5D5'>网站开发 js</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">js的事件绑定与解绑</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-08-27T09:28:17.000Z"
+                              itemprop="datePublished">2016-08-27</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>欢迎大家来到百家讲坛，今天要讲的是js的事件绑定与解绑，不是java的事件绑定与解绑，也不是script的时间绑定与解绑，啊更不是jquery的事件绑定与解绑，而是javascript的事件绑定与解绑，那么老师今天就带领大家进入javascript的世界，来领略javascript的魅力。。。</p>
+<p><div><img src="http://ofa6mufj4.bkt.clouddn.com/dd.png"> </div><br> 吭吭，刚才打开的方式不对，不要在意这些细节，言归正传，今天要讲的是javascript的事件绑定与解绑，再次强调不是jquery的事件绑定与解绑，之前我已经写过一篇关于jquery的事件绑定的博文，这次是从javascript的角度来解析事件的绑定与解绑，也可以理解为这是对jquery的绑定事件方法的解析，以为jquery的事件绑定与解绑使用的js方法就是这里将要讲到的方法。</p>
+<p><strong>1、绑定</strong></p>
+<p>首先来说说事件的绑定，js中事件的绑定方法有两种，一种是<code>addEventListener</code>,另一种是<code>attachEvent</code>,这两中方法的区别主要是前者是可以在只能在现代浏览器中使用，在一些较老版本的浏览器是无效的，如ie8一下浏览器中是无效的，而后者<code>attachevent</code>正好与<code>addEventListener</code>正好相反，所以通常是使用<code>addEventListener</code>，而<code>attachevent</code>只用来做兼容，在jquery的1.x版本中就是这样做的，而在较新的2.x版本中直接抛弃了很多兼容，也就没有了<code>attachevent</code>方法，来看一下这两个方法的具体用法：</p>
+<p><pre id="javascript">var img=document.getElementById(‘img’);<br>var div=document.getElementById(‘div’);<br>img.addEventListener(“click”,function(){alert(“add1”)},true);<br>img.addEventListener(“click”,function(){alert(“add2”)},true);<br>//add1//add2<br>img.attachEvent(“onclick”,function(){alert(“att1”)});<br>img.attachEvent(“onclick”,function(){alert(“att2”)});<br>//att2//att1<br></pre><br>看上面的代码这两事件绑定方法使用上比较简单，类似jquery中的事件绑定方法，这两个方法比较有些区别，首先<code>attachEvent</code>方法事件类型要加on,执行顺序上<code>addEventListener</code>是顺序执行的，而<code>attachEvent</code>是倒序，参数上<code>addEventListener</code>要比<code>attachEvent</code>多一个布尔型参数，这个参数意义后面会具体讲到，这些事两种方法的区别，还有这两种方法和一般的事件方法的区别最主要的是这种绑定可以绑定多个，而事件方法多个会进覆盖，只执行最新的。</p>
+<p><strong>2、解绑</strong></p>
+<p>上面讲的事件绑定，接下来是事件的解绑，有了前面的绑定的解说，解绑理解就非常简单了</p>
+<p><pre id="js">img.removeEventListener(“click”,show,true);<br>img.detachEvent(“onclick”,show);</pre><br>事件的解绑和事件的绑定非常类似，但有一点区别就是解绑的第二个参必须是一个定义好的函数而不能是一个匿名函数，却对象绑定的也必须是这个定义好的方法。</p>
+<p><strong>3、<code>EventListener</code>的第三个参</strong></p>
+<p>接下来是来说一下<code>addEventListener</code>和<code>removeEventListener</code>的第三个参的含义，接下来再上一段代码</p>
+<p><pre id="js">img.addEventListener(“click”,function(){alert(“img1”)},true);//1<br>img.addEventListener(“click”,function(){alert(“img2”)},false);//2<br>div.addEventListener(“click”,function(){alert(“div1”)},true);//3<br>div.addEventListener(“click”,function(){alert(“div2”)},false);//4</pre><br>首先声明的是img是div的子标签，这段代码放在script中注释两个剩下两个执行，最终可以发现，在一个true一个false的情况下，true总是前触发；在都是true的时候div对象的事件先触发；在都是false的情况下，img对象的事件先触发。我们很容易就找到了这些规律，但其实这个参数我么很少会去设置，这个参数的默认值是false,其实说这两种绑定与解绑的方法我们也很少去使用，我么通常都是使用jquery中的on()、bind()等方法进行事件绑定与解绑，但这些jquery的方法也是有必要知道怎么实现。俗话说技多不压身，人就是要不断的学习。</p>
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/28/久石让的音乐/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/08/21/jQuery解析初级篇/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

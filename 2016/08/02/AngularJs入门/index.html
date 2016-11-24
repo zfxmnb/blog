@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>AngularJs入门 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">AngularJs入门</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,152 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-AngularJs/' style='color:#D5D5D5'>网站开发 AngularJs</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">AngularJs入门</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-08-02T09:29:47.000Z"
+                              itemprop="datePublished">2016-08-02</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>AngularJs是一款优秀的前端JS框架，它适用于页面数据交互较多的web应用，使用最多的场景就是手机端页面和Hybrid app,angularJs通过标签的属性绑定来控制框架功能的实现。</p>
+<p>那么angularJs有哪些优点和缺点呢。首先是数据的双向绑定，简单的例子就是当一个地方的数据发生改变另一个绑定了相同数据的地方数据也发生改变，这个是angularJs中最重要的一个特点，试想如果使用其他js的方法要实现这样的一个功能需要怎么做。代码模块化，在angularJs中的变量和方法都有自己的model和作用域。依赖注入，通俗的将就是在创建对象的时候加入方法，这样做可以是的方法可以重复使用，这样多降低了代码的耦合性。angularJs的directive机制将功能封装成HTML的标签、属性、样式、注释，这样美化结构且易于阅读。前面说了一些angularJs的优点，再来说下它的一些不足之处，angularJs有很多场景并不适合使用，比如机构比较复杂的页面，可能会有性能缺陷，angularJs也不适合那种交互比较频繁的页面，毕竟angularJs优势在单页面的数据处理，而且对于那些需要做SEO的页面来说，angularJs也不太合适，除了这些应用场景的不足外，angularJs也还有具体实现的不足之处，angularJs是一个模块化的框架，这必然带来了很多的局限性，在很多操作上远远没有jQuery来的方便，例如一个Tab选项卡的功能，在jQuery中这个功能是很简单就能实现的，但使用angularJs却困难重重。</p>
+<p>以上就是我个人对angularJs的一些粗浅的理解，有什么不对的还望多担待，下面我将以一个demo来讲述一下angularJs的一些简要操作。</p>
+<p>html部分：</p>
+<pre id="html">
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+<pre><code>&lt;div ng-app = &quot;testapp&quot; ng-controller = &quot;controller&quot;&gt;
+    &lt;button ng-click = &quot;toggle()&quot;&gt;隐藏/显示&lt;/button&gt;
+    &lt;div class=&quot;con&quot; ng-hide=&quot;sh&quot;&gt;
+            &lt;h1&gt;数据计算&lt;/h1&gt;
+            &lt;select ng-model=&quot;selecter&quot;&gt;
+                &lt;option value=&quot;{{ t }}&quot; ng-repeat=&quot;t in products.type&quot;&gt;{{ t }}&lt;/option&gt;
+            &lt;/select&gt;
+            筛选：&lt;input type=&quot;text&quot; ng-model=&quot;name&quot;&gt;
+            &lt;ul ng-init=&quot;s=0&quot;&gt;
+                &lt;li ng-repeat=&quot;x in products[selecter] | filter:name | orderBy:&apos;name&apos;&quot; ng-init=&quot;num:x.mCount&quot;&gt;
+                &lt;span&gt;{{x.name}}   单价：{{x.price}}  x  数量：&lt;input ng-model=&quot;num&quot;  type=&quot;number&quot; minValue=&quot;{{x.mCount}}&quot; ng-Keyup=&quot;ValidationKey()&quot; ng-Click=&quot;Validation()&quot; ng-Blur=&quot;ValidationBlur()&quot; value=&quot;{{x.mCount}}&quot;&gt;&lt;span ng-init=&quot;s+=x.price*(num||x.mCount))&quot;&gt;{{x.price*(num||x.mCount)| currency }}&lt;/span&gt;&lt;/span&gt;
+                &lt;/li&gt;
+            &lt;/ul&gt;
+
+            &lt;h1&gt;表单验证&lt;/h1&gt;
+            &lt;form action=&quot;&quot; name=&quot;myForm&quot; method=&quot;POST&quot;&gt;
+                &lt;div&gt;
+                    账号：&lt;input type=&quot;text&quot; name=&quot;name&quot; ng-model=&quot;user.name&quot; ng-pattern=&quot;/^[a-zA-Z][a-zA-Z]*$/&quot; required&gt;
+                    &lt;span ng-show=&quot;myForm.name.$dirty &amp;&amp; myForm.name.$invalid&quot; style=&quot;color:red&quot;&gt;
+                        &lt;span ng-show=&quot;myForm.name.$error.required&quot;&gt;用户名不能为空！&lt;/span&gt;
+                        &lt;span ng-show=&quot;myForm.name.$error.pattern&quot;&gt;用户名必须为字母！&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    邮箱：&lt;input type=&quot;email&quot; name=&quot;email&quot; ng-model=&quot;user.email&quot;&gt;
+                    &lt;span style=&quot;color:red&quot; ng-show=&quot;myForm.email.$dirty &amp;&amp; myForm.email.$invalid&quot;&gt;
+                      &lt;span ng-show=&quot;myForm.email.$error.required&quot;&gt;邮箱是必须的。&lt;/span&gt;
+                      &lt;span ng-show=&quot;myForm.email.$error.email&quot;&gt;非法的邮箱。&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    密码：&lt;input type=&quot;password&quot; name=&quot;pwd&quot; ng-model=&quot;user.pwd&quot; required&gt;
+                    &lt;span ng-show=&quot;myForm.pwd.$dirty &amp;&amp; myForm.pwd.$invalid&quot;&gt;
+                        &lt;span ng-show=&quot;myForm.pwd.$error.required&quot; style=&quot;color:red;&quot;&gt;密码必须填写！&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                 &lt;div&gt;
+                    手机号：&lt;input type=&quot;number&quot; name=&quot;phone&quot; ng-model=&quot;user.phone&quot; ng-minlength=&quot;11&quot; ng-maxlength=&quot;11&quot; required &gt;
+                    &lt;span ng-show=&quot;myForm.phone.$dirty &amp;&amp; myForm.phone.$invalid&quot; style=&quot;color:red;&quot;&gt;
+                        &lt;span ng-show=&quot;myForm.phone.$error.required&quot;&gt;号码必须填写！&lt;/span&gt;
+                        &lt;span ng-show=&quot;myForm.phone.$error.minlength&quot;&gt;位数不对！&lt;/span&gt;
+                        &lt;span ng-show=&quot;myForm.phone.$error.maxlength&quot;&gt;位数不对！&lt;/span&gt;
+                    &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    同意&lt;input  type=&quot;checkbox&quot; ng-model=&quot;toggleable&quot;&gt;
+                &lt;/div&gt;
+                &lt;button ng-disabled=&quot;!toggleable || myForm.$invalid&quot; &gt;确认&lt;/button&gt;
+            &lt;/form&gt;
+
+            &lt;h1&gt;依赖注入&lt;/h1&gt;
+            &lt;p&gt;n1: &lt;input type = &quot;number&quot; ng-model = &quot;number1&quot; /&gt;&lt;/p&gt;
+            &lt;p&gt;n2: &lt;input type = &quot;number&quot; ng-model = &quot;number2&quot; /&gt;&lt;/p&gt;
+            &lt;span&gt;{{result}}&lt;/span&gt;
+            &lt;button ng-Click=&quot;follow()&quot;&gt;计算&lt;/button&gt;
+
+            &lt;h1&gt;服务&lt;/h1&gt;
+            &lt;p&gt;{{time}}&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;script src=&quot;angularJs.js&quot;&gt;&lt;/script&gt;
+</code></pre><p></p></pre><br>data部分：<p></p>
+<p><pre id="js">p={<br>        wholesale:[<br>            {name:”苹果”,price:10,mCount:10},<br>            {name:”香蕉”,price:15,mCount:10},<br>            {name:”橘子”,price:20,mCount:10}<br>        ],<br>        retail:[<br>            {name:”苹果”,price:15,mCount:1},<br>            {name:”香蕉”,price:20,mCount:1},<br>            {name:”橘子”,price:25,mCount:1}<br>        ],<br>        type:[<br>            “wholesale”,”retail”<br>        ]</pre></p>
+<pre><code>}
+</code></pre><p><br>javascript部分：</p>
+<p><pre id="js">var app=angular.module(“testapp”,[]);</pre></p>
+<p>app.value(“test”, 10);</p>
+<p>app.config(function($provide) {<br>    $provide.provider(‘Math’, function() {<br>       this.$get = function() {<br>          var factory=[];<br>          factory.multiply = function(a, b) {<br>             return “n1<em>n2 = “+a </em> b;<br>          }<br>          return factory;<br>       };</p>
+<pre><code>});
+</code></pre><p>});</p>
+<p>app.service(‘calculate’, function(Math){<br>this.square = function(a,b) {<br>    return Math.multiply(a,b);<br>}<br>this.s = function(a) {<br>    if(a&lt;10) a=10;<br>       return a;<br>}<br>});</p>
+<p>app.controller(“controller”,function($scope,calculate,test,$interval,$http){<br>    //$scope.s=0;<br>    $scope.toggleable=false;<br>    $scope.products=p;<br>    $scope.sh=false;<br>    $scope.toggle=function(){<br>        $scope.sh=!$scope.sh<br>    }<br>    $scope.ValidationBlur=function(){<br>        var mc=parseInt(this.x.mCount);<br>        if(this.num<mc){ this.num="mc;" }="" $scope.validationkey="function(){" var="" mc="parseInt(this.x.mCount);" if(!angular.isnumber(this.num)){="" this.num.replace(="" [\@\#\$\%\^\&\*\(\)\{\}\:\"\<\="">\?\[\]\-\_\+\=\ ]+/g, '');
+        }
+    }
+    $scope.Validation=function(){
+        var mc=parseInt(this.x.mCount);
+        if(this.num<mc){ this.num="mc;" }="" if(!angular.isnumber(this.num)){="" this.num.replace(="" [\@\#\$\%\^\&\*\(\)\{\}\:\"\<\="">\?[]-_+\=\ ]+/g, ‘’);<br>        }<br>    }</mc){></mc){></p>
+<pre><code>// $http.get(&quot;TestText.html&quot;).success(function(response){
+//     $.scope.testtext=response.data;
+// })
+
+$scope.time = new Date().toLocaleTimeString();
+$interval(function () {
+      $scope.time = new Date().toLocaleTimeString();
+}, 1000);
+
+$scope.number1 = test;
+$scope.number2 = test;
+$scope.result =calculate.square(calculate.s($scope.number1),calculate.s($scope.number2));
+
+$scope.follow = function() {
+    $scope.number1 = calculate.s($scope.number1);
+    $scope.number2 = calculate.s($scope.number2);
+    $scope.result = calculate.square(calculate.s($scope.number1),calculate.s($scope.number2));
+}
+</code></pre><p>});<br>这个demo主要是有三个部分组成，分别是数据计算、表单验证和依赖注入，包含了angularJs框架的基本知识点，希望对想要学习angularJs的人有所帮助。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/03/table的特性/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/07/28/客户端Excel浏览与下载/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

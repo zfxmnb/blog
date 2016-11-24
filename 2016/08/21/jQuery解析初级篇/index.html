@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>jQuery解析初级篇 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">jQuery解析初级篇</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,121 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-JQuery/' style='color:#D5D5D5'>网站开发 JQuery</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">jQuery解析初级篇</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-08-21T09:28:52.000Z"
+                              itemprop="datePublished">2016-08-21</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>jQuery前端开发中使用最广泛的JS框架，同时它的功能相当强大，使用也相当便捷，这个是一个非常受前端开发人员喜欢的框架，但是在jquery带给我们便捷的时候我们有没有想过jquery的这些功能是怎么实现的，很多人都好奇jquery是如何的功能实现，但是又疲于jquery代码太过繁多复杂而打消了这个念头，但是我向来是比较喜欢琢磨一些不了解的东西，于是我花了一些的时间去网上查看一些关于jquery源码解析的文章和耐心的分析jquery的源码，最后有了些许成果，在这里分享一下。</p>
+<p>首先上一道热腾腾的代码：</p>
+<p><pre id="js">//这个是一个沙箱<br>    (function(window){<br>        //“use strict”;</pre></p>
+<pre><code>    //$是一个function，可视为一个对象
+    var $=function(s){
+        return new $.prototype.init(s);//返回一个对象传给$
+    };
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+    $.prototype.init=function(s){
+        if(s.charAt(0) = = &quot;#&quot;){
+            var x=document.getElementById(s.substr(1));
+        }
+        else if(s.charAt(0) = = &quot;.&quot;){
+            var x=document.getElementsByClassName(s.substr(1));
+        }
+        else{
+            var x=document.getElementsByTagName(s);
+        }
+        for(var i in $){
+                eval(&quot;x.&quot;+i+&quot;=&quot;+$[i]);
+            }  
+        x.namex=function(name){return &quot;this is my name:&quot;+name};//给x对象添加一个方法
+        return x;//返回对象x
+    }
+
+    //$的一个遍历方法
+    $.efor=function(obj,callback)
+    {   
+        var xx = typeof(obj) = = &quot;object&quot;?
+        function(){
+            //alert(typeof(obj))
+            for(var i in obj){
+                callback.apply(obj[i]);
+            }
+        }
+        :
+        function(){
+            callback=obj;
+            for(var i=0;i &lt; x.length;i++){
+                callback.call(x[i]);
+            }
+        }
+        xx();
+    }
+    window.$=window.jquery=$;
+})(window)
+
+//console.log($(&quot;div&quot;).length)
+$(&quot;div&quot;).efor(function(){
+    this.onclick=function(){
+        this.style=&quot;background:yellow;&quot;
+    }
+})
+
+
+
+$.efor($(&quot;.div2&quot;),function(){
+    this.onclick=function(){
+        this.style=&quot;background:red;&quot;
+    }
+});
+
+$(&quot;div&quot;).onclick=function(){
+    this.style=&quot;background:blue;&quot;
+};
+document.getElementsByClassName(&apos;div1&apos;).style=&quot;background:green;&quot;
+
+for(var key in $(&quot;div&quot;)[0]){
+    //console.log(key+&quot;- &gt; &quot;+$(&quot;div&quot;)[0][key]);
+}&lt;/pre&gt;
+</code></pre><p>我来分析一下这段代码。<code>(function(window){})(window)</code>这个类似于沙箱，为的是不让里面的代码受到污染，在沙箱中最后一行<code>window.$=window.jquery=$;</code>这一条很重要，意思是沙箱的$对象和方法传给window，<code>var $</code>=<code>window.$</code>。再往下看是这段代码的重要的部分，我写了两个代码，一个是对应的jquery的选择器，另一个对应的是jquery的方法，首先选择器是通过实例化一个原型类然后把这个对象返回给$,其次是$的方法，写这种方法的方法和写一般方法差不多，但如果该方法有callback回调函数的话这需要使用js中的<code>apply</code>或者<code>call</code>方法给callback中的this传入值，但要使用这两个方法首先要知道这两个方法如何使用，<code>callback.apply(this,[arg1,arg2])</code>,<code>callbak.call(this,arg1,arg2)</code>,其中this是传入callback中的this，arg1和agr2是callback的传参，这两个方法在jquery中使用比较频繁，因为只要有毁掉函数的地方就会出现他们的身影，具体的选择器、对象方法的实现、以及call等js方法使用在上面的代码例子中都有体现，但归根结底还是要亲手去尝试，只有通过自己动手尝试才能够更深刻的理解这些代码实现原理，尤其是对对象、类、原型的理解上回更有帮助。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/27/js的事件绑定与解绑/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/08/18/在线五子棋游戏/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>深度克隆对象 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">深度克隆对象</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,66 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-js/' style='color:#D5D5D5'>网站开发 js</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">深度克隆对象</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-10-11T09:26:20.000Z"
+                              itemprop="datePublished">2016-10-11</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>在前端领域说到克隆大家首先想到的是jquery中的对象克隆<code>clone()</code>,我们通常会使用这个方法把标签对象克隆后再加到页面的某个位置，直接使用<code>$(selector).clone();</code>这种方法的话只能克隆标签的结构和样式，而不能克隆对象的事件方法，当然jquery已经在我们之前想到了这个问题，在jquery中可以使用<code>$(selector).clone(&#39;deep&#39;);</code>克隆对象，这样克隆的对象的属性方法都会和被克隆对象的属性方法一样，在jquery中我们可以用这个方法完美克隆jquery的对象，那么问题来了，js中的对象如何做到深度克隆，如果不深度克隆会有什么影响。</p>
+<p>在js中的对象主要有标签对象以及JSON数据对象，那么使用深度和不使用深度克隆有什么不一样，接下来就下面例子来分析为什么要深度克隆。</p>
+<p><pre id="js">            var o1={},o2={};<br>            o1.x=1;<br>            o1.y=function(){return 1};<br>            o2=o1;</pre></p>
+<pre><code>console.log(o2.x);// 1
+console.log(o2.y());// 1
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+o2.x=2;
+o2.y=function(){return 2};
+
+console.log(o1.x); // 2
+console.log(o1.y()); // 2&lt;/pre&gt;
+</code></pre><p><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"><br><img style="width:40px;display:inline-block" src="http://img.baidu.com/hi/jx2/j_0004.gif"></p>
+<p>WTF,怎么会有这种事情，没错这种现象确实存在，这就是我们为什么有时候需要深度克隆的原因，至于为什么会这样，我猜可能是因为这样直接赋值的话导致两个对象共用同一个内存空间，无论那个对象的属性方法发生改变都将会影响另外一个对象。</p>
+<p>那么如果需要深度克隆是应该怎么做，之前的<code>o2=o1</code>这种方式是行不通的，<code>o2.x=o1.x  o2.y=o1.y</code>这种方式是有用的，如果使一些简单的对象我们可以直接简单的用这种方法实现深度克隆。如果是一个复杂多层的对象要实现深度克隆就需要费一些周章了。</p>
+<p><pre id="js">           function OType(o){<br>                if(o= =null) return “Null”;<br>                if(o= =undefined) return “Undefined”;<br>                return Object.prototype.toString.call(o).slice(8,-1);<br>           }<br>           function deepClone(obj){<br>                var result,oClass=OType(obj);<br>                if(oClass = = “Object”){<br>                    result={};<br>                }else if(oClass = = “Array”){<br>                    result=[];<br>                }else{<br>                    return obj;<br>                }<br>                for(key in obj){<br>                    var copy=obj[key];<br>                    if(OType(copy)==”Object”||OType(copy)= =”Array”){<br>                        //result[key]=deepClone.call(“”,copy);<br>                        result[key]=arguments.callee(copy);<br>                     }else{<br>                        result[key]=obj[key];<br>                    }<br>                }<br>                return result;<br>           }</pre><br>在这段代码中OType方法目的是为了获取确定对象内部数据的类型，<code>Object.prototype.toString.call(o)</code>取到的是一个字符串格式为<code>[Object ?]</code>，?就是我们要的类型字符串，通常有<code>Object,Function,String,Number</code>等等，在deepClone方法中使用OType的次数会比较多。在deepClone中里面首先判断obj的类型，这样返回的对象一个初始类型，例如：如果是类型为”Object”<code>result={}</code>。再下面就是对对象的循环赋值，这里的循环要进行判断，如果属性对象或者数组的话这需要在次执行deepClone方法一遍，这样才能确保对象深度克隆，如果属性不是对象或者数组的话就无需这个步骤，直接用等号赋值即可，最后返回的result就是克隆的结果。</p>
+<p>在这段代码中有两个关键的地方，一是call的使用，二是arguments的含义及与之配套的callee方法的使用。call的使用在<a href="/jquerychu-ji-pian/">jQuery解析初级篇</a>中有这方面的介绍，想要了解的话可以去看一下；<code>arguments.callee(copy)</code>在这里是调用了自身的方法，这种方式在程序中叫做<code>递归</code>,argument指的就是当前执行的方法，在这里当前方法就是deepClone，而callee与call也是非常的相似，call第一个参数是传给方法中this的，第二个开始才是传参，而callee第一个参数既是传参。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/10/19/排序/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/09/30/html5中的多媒体调用/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

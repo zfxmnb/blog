@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>canvas五子棋 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">canvas五子棋</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,232 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-H5/' style='color:#D5D5D5'>网站开发 H5</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">canvas五子棋</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-08-10T09:29:23.000Z"
+                              itemprop="datePublished">2016-08-10</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>canvas是html5中的新标签，canvas画布的意思，意为在这个标签元素中可以像在画布上面一样绘制，有了canvas我们可以像做不断的刷新画布再在画布上绘制图像来实现动画的效果，其实也可以使用html标签来实现的动画，但如果使用这种方法实现动画就必须要对元素不断的重绘和渲染，也会使得页面的结构变得非常复杂，而且由于这个原因需要大量占用CPU,这样会最终导致动画效果非常差出现严重卡顿现象，而canvas做这些事情就轻松很多，canvas只需要控制随时间显示不同的图像，而具体的绘制则可以交给GPU来实现，而GPU绘制图像的性能可是要甩出CPU好几条街的。</p>
+<p>这次我所做的五子棋游戏是使用canvas来实现的，但五子棋并没有频繁的使用动画，可能性能上与html标签做出来的差别不大，但我做这个的目的主要是个人兴趣，但是我觉得这是一个比较典型的canvas的应用，<a href="http://www.fanxinzeng.top/content/images/canvaswzq.html" target="_blank" rel="external">这个小的五子棋游戏地址</a></p>
+<p>下面是实现代码：</p>
+<pre id="html">< style >
+        .canvas_con{
+            width:650px;
+            margin:0 auto;
+        }
+        #canvas{
+            display:block;
+            margin:0 auto;
+            border:1px solid gray;
+            cursor:pointer;
+        }
+    < /style >
+    < div class="canvas_con">
+        < canvas width="650" height="516" id="canvas" >< /canvas >
+        < button id="reset" >Reset< /button >
+    < /div >< /pre >
+<pre id="js">var arr=new Array(),k=null;
+    window.onload=function(){
+        var canvas=document.getElementById('canvas');
+        var ctx=canvas.getContext("2d");
+        grid(ctx);
+        arr=arrSet(arr);
+        playChess(canvas,ctx);
+    }
+    //reset
+    var reset=function(ctx){
+        ctx.clearRect(0,0,650,516);
+        grid(ctx);
+    }
+    //网格
+    var grid=function(ctx){
+        ctx.fillStyle="#fff";
+        ctx.fillRect(0,0,650,516);
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+        ctx.lineWidth=3;
+        ctx.strokeStyle="#000";
+        ctx.strokeRect(10,10,498,498);
+        ctx.lineWidth=1;
+        for(var i=0;i < 21;i++){
+            ctx.beginPath();
+            ctx.moveTo(i*24+18,18);
+            ctx.lineTo(i*24+18,498);
+            ctx.closePath();
+            ctx.strokeStyle="gray";
+            ctx.stroke();
+        }
+        for(var i=0;i < 21;i++){
+            ctx.beginPath();
+            ctx.moveTo(19,i*24+18);
+            ctx.lineTo(498,i*24+18);
+            ctx.closePath();
+            ctx.strokeStyle="gray";
+            ctx.stroke();
+        }
+        info(0,0,"w",null,ctx);
+    }
+    //点击事件
+    var playChess=function(canvas,ctx){
+        var i="w",w=0,b=0;
+        document.getElementById('reset').onclick=function(){
+            arr=arrSet(arr);
+            k=null;
+            w=0,b=0;
+            reset(ctx);
+        }
+        canvas.onmousedown=function(e){
+            var x=e.offsetX,y=e.offsetY;
+            if(x > 13&&x < 498&&y > 13&&y<498){ var="" px="parseInt((x-6)/24);" py="parseInt((y-6)/24);" if(arr[px][py]="=0&&k==null){" if(i="="w"){" arr[px][py]="1;" chessdown(ctx,e,i,px,py);="" w++;="" k="win(px,py,i,arr);" i="b" ;="" info(w,b,i,k,ctx);="" }else{="" b++;="" }="" 右侧栏信息="" info="function(w,b,i,k,ctx){" captionw="白方" captionb="黑方" tipword="黑方落子" }else="" if(k="="w"){" ctx.clearrect(516,0,140,520);="" ctx.shadowblur="0;" ctx.fillstyle="#fff" ctx.fillrect(516,0,140,520);="" ctx.font="30px Microsoft YaHei" ctx.filltext(captionw,520,30);="" ctx.filltext(tipword,520,245);="" ctx.filltext(captionb,520,500);="" ctx.filltext(w,520,60);="" ctx.filltext(b,520,470);="" 数组初始化="" arrset="function(arr){" arr="new" array();="" for(var="" <="" 21;i++){="" arr[i]="new" j="0;j" 21;j++){="" arr[i][j]="0;" return="" arr;="" 落子="" chessdown="function(ctx,e,i,px,py){" color="#ddd" else="" ctx.beginpath();="" ctx.arc(px*24+17,py*24+17,10,0,2*math.pi="" 180,true);="" ctx.closepath();="" ctx.shadowcolor="#000" ctx.fill();="" 判断有没有五子="" win="function(px,py,c,arr){" if(c="="w"){" if(check(1,px,py,arr)=""> 4) return c;
+        }else{
+            if(check(-1,px,py,arr) > 4) return c;
+        } 
+    }
+    //具体检测代码
+    var check=function(x,px,py,arr){
+        //横向
+        var n=0; 
+        for(var i=px;i > -1;i--){
+                if(arr[i][py]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        for(var i=px+1;i < 21;i++){
+            if(arr[i][py]==x){
+                n++;
+            }else{
+                break;
+            }
+        }
+        if(n > 4) return n;
+
+        //纵向
+        var n=0;
+        for(var i=py;i > -1;i--){
+                if(arr[px][i]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        for(var i=py+1;i < 21;i++){
+            if(arr[px][i]==x){
+                n++;
+            }else{
+                break;
+            }
+        }
+        if(n > 4) return n;
+
+        //东北向
+         var n=0;
+        if(px+py < 21){
+            for(var i=px;i > -1;i--){
+                if(arr[i][py+(px-i)]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+            for(var i=py-1;i > -1;i--){
+                if(arr[px+(py-i)][i]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        }else{
+            for(var i=px;i < 21;i++){
+                if(arr[i][py+(px-i)]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+            for(var i=py+1;i < 21;i++){
+                if(arr[px+(py-i)][i]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        }
+        if(n > 4) return n;
+
+        //东南向
+        var n=0;
+        if(px > py){
+            for(var i=px+1;i < 21;i++){
+                if(arr[i][py+(i-px)]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+            for(var i=py;i > -1;i--){
+                if(arr[px-(py-i)][i]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        }else{
+            for(var i=px;i > -1;i--){
+                if(arr[i][py-(px-i)]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+            for(var i=py+1;i < 21;i++){
+                if(arr[px+(i-py)][i]==x){
+                    n++;
+                }else{
+                    break;
+                }
+            }
+        }
+        if(n > 4) return n;
+    } </498){></pre></pre>
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/12/socket聊天室/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/08/03/table的特性/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

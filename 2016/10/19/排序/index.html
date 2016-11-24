@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>排序 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">排序</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,78 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-js/' style='color:#D5D5D5'>网站开发 js</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">排序</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-10-19T09:26:04.000Z"
+                              itemprop="datePublished">2016-10-19</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>看看日期算下距离天猫的双十一（俗称光棍节实则剁手节-_-）还有二十天了,一大波进击的剁手党严阵以待,在那几天又要发生大规模的流血事件,我闲来无事也喜欢逛下购物网站，当然我多数只是看看而已，我们在浏览购物网站在选择商品的时候通常都会想选择一类商品或一种商品然后再通过不同的排序条件来进行排序，我们常用到的排序有根据价格、销量、评价、综合等这些项目进行排序，排序可以是正序也可以是倒序，其实现和简单就是通过前端发请求到后端，后端把数据处理层特定排序返回前端，这个过程貌似前端没有干啥事情。但是我们可以把这个过程放到前端来分析，如何在前端把商品对象以想要的排序方式进行排序，排序无非就是从小到大或者从大到小的排序，一般的数组的排序我们已经驾轻就熟了，如果只是单纯的排序不用对数据进行增删的操作的或可以直接用sort()进行排序，而如果在排序中需要对数据进行修改也可以通过多重循环来获得排序。<br>而对于数组值为对象的数组又如何对其进行排序呢，其实排序方式都是一样的，记下来就来罗列一下我觉得可行的几种排序方法。</p>
+<p><pre id="js">function Sort1(a,attr,inverted){<br>                var ar=[a[0]],l=a.length;<br>                for(var i=1;i &lt; l;i++){<br>                    var ai=a[i][attr];<br>                    for(var j=i-1;j &gt; -1;j–){<br>                        var aj=ar[j][attr];<br>                        if((inverted||false)&amp;&amp;(ai &lt; ar[i-1][attr]|| ai = = aj)){<br>                            ar.splice(ar.length,0,a[i]);<br>                            break;<br>                        }else if(!(inverted||false)&amp;&amp;(ai &gt; ar[i-1][attr]||ai = =aj)){<br>                            ar.splice(ar.length,0,a[i])<br>                            break;<br>                        }<br>                       if(j &gt; 0){<br>                            var a_j = ar[j-1][attr];<br>                            if((inverted||false)&amp;&amp;(ai &gt; aj&amp;&amp;ai &lt; a_j||ai= =a_j)){<br>                                    ar.splice(j,0,a[i])<br>                                    break;<br>                            }else if(!(inverted||false)&amp;&amp;(ai &lt; aj&amp;&amp;ai &gt; a_j||ai= =a_j)){<br>                                    ar.splice(j,0,a[i])<br>                                    break;<br>                            }<br>                       }else{<br>                            ar.splice(0,0,a[i]);<br>                       }<br>                    }<br>                }<br>                return ar;<br>        }</pre></p>
+<pre><code>function Sort2(a,attr,inverted){
+    var ar=[],l=a.length;
+    for(var i=0;i &lt; l;i++){
+        var mArr=a[0],index=0;
+        for(var j=0;j &lt; a.length;j++){
+            if(mArr[attr] &lt; a[j][attr]||mArr[attr]==a[j][attr]){
+                mArr=a[j];
+                index=j;
+            }
+        }
+        a.splice(index,1);
+        (inverted||false)?ar.push(mArr):ar.unshift(mArr)
+    }
+    return ar
+}
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+function Sort3(a,attr,inverted){
+        function sort(a,b){
+            return a[attr] &gt; b[attr]?1:-1
+        }
+        function sortInv(a,b){
+            return b[attr] &gt; a[attr]?1:-1
+        }
+        return a.sort((inverted||false)?sortInv:sort);
+}
+</code></pre><p><br>以上的三种方法都实现了对数组arr的正反两种排序，这三种方法实现的方式不一样，首先来说下sort1，这个方法通过两个循环用splice方法把原数组的对象插入到新数组中去，这种方法对原来的数组没有什么影响，结果返回的是一个新的数组,但是这个方法看到这几个辣么长的判断就够让人头疼的了；第二种排序方法sort2就是我们比较能想到的方法，这个方法通过循环取最大属性值的对像，在通过push或者unshift的方法建立新的数组，这种方法的弊端就是会把原来的数组arr全部删光，至于明明是arr传值给sort2，为什么会改变arr的值，这个问题可以参考<a href="http://www.fanxinzeng.top/shen-du-ke-long-dui-xiang/" target="_blank" rel="external">《深度克隆》</a><code>为什么要深度克隆</code>部分。最后一个排序方法是sort3<br>，这个方法只有短短的几行代码，这个方法用到了js原生的sort方法，只要用过这个方法的人应该都能比较好理解。单从代码的的方面考虑量的方面考虑的话排序应该是<code>sort3&gt;sort2&gt;sprt1</code>,但是为了保险起见，我还是对这几个方法进行了性能测试，我使用一个长度为20的对象数组，数组结构是这样的<code>arr =  [{&quot;name&quot;:&quot;&quot;,&quot;age&quot;:}</code>，然后我用循环执行每个方法1e5次，记录他们执行1e5次所需要的时间，得出结果最快的是sort3大概150ms，其次是sort1大概750ms，最慢的是sort2大概850ms，这些数据只是在特定情况下得到的，有可能换一个电脑或者换一个浏览器，结果又会有一下偏差，但是这些数据大概可以对比出这三种方法性能上的排序，可以给以后做排序是选择方法时做参考。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/10/24/随笔htmlcss滚动效果/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/10/11/深度克隆对象/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

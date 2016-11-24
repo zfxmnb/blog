@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>socket聊天室 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">socket聊天室</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,189 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-socket/' style='color:#D5D5D5'>网站开发 socket</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">socket聊天室</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-08-12T09:29:08.000Z"
+                              itemprop="datePublished">2016-08-12</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>soclet在俗称“套接字”，它是连接应用层和传输层之间的桥梁，大概是把，反正百度上是这么说的，一般我们要从服务器上获取到数据图片或者文件通常是从浏览器端主动发出请求后服务器做出响应，但是通常服务器不能主动的向浏览器发送消息，而socket帮我们解决了这个问题，在网站开发中这个技术最常用的场景是做即时聊天功能，通常一些购物网站上会有这样的聊天功能，比如淘宝网页的旺旺，在学习socket的时候我做了一个聊天室，这个聊天室实现了公共聊天和私聊两种功能，nodejs+express+socket.io结合。</p>
+<p>这个聊天室的demo链接是：<a href="http://139.129.48.163:3000/chat" target="_blank" rel="external">http://139.129.48.163:3000/chat</a></p>
+<p>接下来是是在nodejs后台代码：</p>
+<p><pre id="js">//在线用户<br>var onlineUsers = {};<br>//当前在线人数<br>var onlineCount = 0;</pre></p>
+<p>var io = require(‘socket.io’)(server);<br>io.on(‘connection’,function(socket){<br>    console.log(“new msg”);</p>
+<pre><code>socket.on(&apos;chat message&apos;, function (from,to,data) {
+  var json=[];
+  json.push(onlineUsers[from]);
+  json.push(from);
+  json.push(data);
+    io.emit(&apos;chat message&apos;,json);
+});
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
+socket.on(&apos;private message&apos;, function (from,to,data) {
+var json=[];
+json.push(onlineUsers[from]);
+json.push(from);
+json.push(data);
+    io.emit(&apos;to&apos;+to,json);
+})
+
+//监听新用户加入
+socket.on(&apos;login&apos;, function(obj){
+    //将新加入用户的唯一标识当作socket的名称，后面退出的时候会用到
+    socket.name = obj.userid;
+    //检查在线列表，如果不在里面就加入
+    if(!onlineUsers.hasOwnProperty(obj.userid)) {
+        onlineUsers[obj.userid] = obj.username;
+        //在线人数+1
+        onlineCount++;
+    }
+    //向所有客户端广播用户加入
+    io.emit(&apos;login&apos;, {onlineUsers:onlineUsers, onlineCount:onlineCount, user:obj.username});
+    console.log(obj.username+&apos;加入了聊天室&apos;);
+});
+//监听用户退出
+socket.on(&apos;disconnect&apos;, function(){
+    //将退出的用户从在线列表中删除
+    if(onlineUsers.hasOwnProperty(socket.name)) {
+        //退出用户的信息
+        var obj = {userid:socket.name, username:onlineUsers[socket.name]};
+        //删除
+        delete onlineUsers[socket.name];
+        //在线人数-1
+        onlineCount--;
+        //向所有客户端广播用户退出
+        io.emit(&apos;logout&apos;, {onlineUsers:onlineUsers, onlineCount:onlineCount, user:obj});
+    }
+});
+</code></pre><p>});<br>这段代码放在express中的app.js中或者bin目录下的www中，这取决于<code>var server = http.createServer(app);</code>开启服务的是在app.js还是在www。<br>接下来是前端页面上的代码,这里就简要的写一下：</p>
+<p><pre id="js">var socket = io();<br>var chatType,id,name;<br>$(“#confirm”).click(function(){<br>    if($(“#username”).val().length &lt; 3||$(“#username”).val().length &gt; 8)<br>        return;<br>    id=”c”+parseInt(Math.random()*10000);<br>    name=$(“#username”).val();<br>    $(“#login,#bg”).hide();</pre></p>
+<pre><code>socket.emit(&apos;login&apos;, {&quot;userid&quot;:id,&quot;username&quot;:name});
+
+socket.on(&apos;login&apos;, function (data) {
+    $(&apos;#chat_contents .commonality .chat_content&apos;).append(&quot;&lt;div class=&apos;tips&apos;&gt;&lt;span&gt;欢迎用户&quot;+data.user+&quot;加入房间&lt;/span&gt;&lt;/div&gt;&quot;);
+    $(&quot;#userList ul&quot;).html(&quot;&quot;);
+    $(&quot;#userList .user_num&quot;).html(&quot;在线人数：&quot;+data.onlineCount);
+    for(key in data.onlineUsers){
+        if(key!=id)
+            $(&quot;#userList ul&quot;).prepend(&quot;&lt; li value=&quot;+key+&quot;&gt;&quot;+data.onlineUsers[key]+&quot; &lt; small&gt;[&lt;i&gt;&quot;+key+&quot;&lt;/i&gt;]&lt; /small&gt;&lt; /li&gt;&quot;);
+        else
+            $(&quot;#userList .self&quot;).html(&quot;&lt;span&gt;name:&lt;/span&gt;&lt;big&gt;&quot;+data.onlineUsers[key]+&quot;&lt;/big&gt;&lt;br /&gt;&lt;span&gt;id:&lt;/span&gt;&quot;+key)
+    }
+    event();
+});
+submit();
+socket.on(&apos;to&apos;+id, function(data) {
+    var username=data[0];
+    var userid=data[1];
+    var msg=data[2];
+
+    eventfn(userid,username);
+    var time=new Date();
+    var h=time.getHours(),m=time.getMinutes(),s=time.getSeconds();
+    var ele=$(&apos;.&apos;+userid);
+    ele.find(&quot;.chat_content&quot;).append(&quot;&lt;div class=&apos;other&apos;&gt;&quot;+
+        &quot;&lt; div class=&apos;text&apos;&gt;&quot;+h+&quot;:&quot;+m+&quot;:&quot;+s+&quot;&lt; /div&gt;&quot;+
+        &quot;&lt; span class=&apos;username&apos;&gt;&quot;+username+&quot;&lt; /span&gt;&lt;span class=&apos;msg&apos;&gt;&quot;+msg+&quot;&lt; /span&gt;&lt; /div&gt;&quot;);
+    ele.scrollTop(ele.find(&quot;.chat_content&quot;).height()-ele.height());
+});
+
+socket.on(&apos;chat message&apos;, function (data) {
+    var username=data[0];
+    var userid=data[1];
+    var msg=data[2];
+    if(userid= =id){
+        var c=&quot;me&quot;;
+    }else{
+        var c=&quot;other&quot;;
+    }
+    var time=new Date();
+    var h=time.getHours(),m=time.getMinutes(),s=time.getSeconds();
+    var ele=$(&quot;.commonality&quot;);
+    ele.find(&apos;.chat_content&apos;).append(&quot;&lt;div class=&quot;+c+&quot;&gt;&quot;+
+        &quot;&lt; div class=&apos;text&apos;&gt;&quot;+h+&quot;:&quot;+m+&quot;:&quot;+s+&quot;&lt; /div&gt;&quot;+
+        &quot;&lt; span class=&apos;username&apos;&gt;&quot;+username+&quot;&lt; /span&gt;&lt; span class=&apos;msg&apos;&gt;&quot;+msg+&quot;&lt; /span&gt;&lt; /div&gt;&quot;);
+    $(&quot;.commonality_title&quot;).trigger(&quot;click&quot;);
+    ele.scrollTop(ele.find(&quot;.chat_content&quot;).height()-ele.height());
+});
+</code></pre><p>});<br>function event(){<br>    $(“#userList ul li”).off();<br>    $(“#userList ul li”).on(“dblclick”,function(){</p>
+<pre><code>        var userid=$(this).attr(&quot;value&quot;);
+        var username=$(this).html();
+    if(userid!=id)
+        eventfn(userid,username);
+
+});
+</code></pre><p>}<br>function eventfn(userid,username){<br>    if($(“#tab_title”).find(“.”+userid).length&gt;0){<br>            $(“#tab_title”).find(“.”+userid).trigger(“click”);<br>        }else{<br>            $(“#tab_title ul”).append(“&lt; li class=’title “+userid+”‘&gt;&lt; span class=’text’&gt;”+username+”&lt; /span&gt;&lt; span class=’close’&gt;x&lt; /span&gt;&lt; /li&gt;”);</p>
+<pre><code>    $(&quot;#chat_contents&quot;).append(&apos;&lt; li class=&quot;&apos;+userid+&apos;&quot; value=&quot;&apos;+userid+&apos;&quot;&gt;&apos;+
+            &apos;&lt; div class=&quot;chat_content&quot;&gt;&lt;div class=&quot;tips&quot;&gt;&lt; span&gt;可以和&apos;+username+&apos;聊天了&lt; /span&gt;&lt; /div&gt;&lt; /div&gt;&apos;+
+            &apos;&lt; div class=&quot;chat_submit&quot;&gt;&apos;+
+                &apos;&lt; input type=&quot;text&quot; class=&quot;input&quot;&gt;&apos;+
+                &apos;&lt; button class=&quot;submit&quot;&gt;提交&lt;/button&gt;&apos;+
+            &apos;&lt; /div&gt;&apos;+
+        &apos;&lt; /li&gt;&apos;);
+}   
+
+ $(&quot;#tab_title .title&quot;).each(function(index){
+    $(this).off();
+    $(this).on(&quot;click&quot;,function(){
+        $(&quot;#tab_title .title&quot;).removeClass(&quot;active&quot;);
+        $(this).addClass(&quot;active&quot;);
+        $(&quot;#chat_contents&gt;li&quot;).removeClass(&quot;active&quot;);
+        $(&quot;#chat_contents&gt;li&quot;).eq(index).addClass(&quot;active&quot;);
+        $(&quot;#tab_title h1&quot;).html($(this).find(&quot;.text&quot;).html());
+    });
+});
+
+ $(&quot;#tab_title&quot;).find(&quot;.&quot;+ userid).trigger(&quot;click&quot;);
+
+$(&quot;#tab_title .title .close&quot;).each(function(index){
+    $(this).off();
+    $(this).on(&quot;click&quot;,function(){
+        $(this).parents(&quot;li&quot;).remove();
+        $(&quot;#chat_contents&gt;li&quot;).eq(index+1).remove();
+        $(&quot;.commonality_title&quot;).trigger(&quot;click&quot;);
+    })
+});
+submit();
+</code></pre><p>}<br>function submit(){<br>        $(“.submit”).off()<br>        $(‘.submit’).on(“click”,function(){<br>                var value=$(this).parent().find(“.input”).val();console.log(value);<br>                var to=$(this).parents(“li”).attr(“value”);<br>                if(to= =”commonality”)<br>                socket.emit(‘chat message’,id,to,value);<br>                else{<br>                    socket.emit(‘private message’,id,to,value);<br>                    var time=new Date();<br>                    var h=time.getHours(),m=time.getMinutes(),s=time.getSeconds();<br>                    var ele=$(‘.’+to);<br>                    ele.find(“.chat_content”).append(“&lt;  div class=’me’&gt;”+<br>                        “&lt; div class=’text’&gt;”+h+”:”+m+”:”+s+”&lt; /div&gt;”+<br>                        “&lt; span class=’username’&gt;”+name+”&lt;/ span&gt;&lt; span class=’msg’&gt;”+value+”&lt; /span&gt;&lt; /div&gt;”);<br>                    ele.scrollTop(ele.find(“.chat_content”).height()-ele.height());<br>                }<br>                $(‘.input’).val(‘’);<br>                return false;<br>        });<br>}<br>浏览器需要使用socket必须要加载socket.io.js。</p>
+
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/08/18/在线五子棋游戏/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/08/10/canvas五子棋/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 

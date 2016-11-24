@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-  <title>Archives | fanxblog</title>
+  <title>从无到有的网页 | fanxblog</title>
   <meta name="description" content="" />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
@@ -406,7 +406,7 @@
                 
                 <div id="nav-container">
                     <div class="post-navbar" style="line-height: 63px;display:none">
-                        <li id="navbar-title"><a href="#">undefined</a></li>
+                        <li id="navbar-title"><a href="#">从无到有的网页</a></li>
                         <li id="navbar-toc" style="border-left: none">
                             <a style="padding-right: 15px">
                                 <span id="toc-content" >Introduction</span><i class="fa fa-chevron-down" ></i>
@@ -425,180 +425,60 @@
 
 
 <!-- -->
-<!--<body class="home-template">-->
+<!--<body class="post-template">-->
 <!---->
   
+
 <main class="content" role="main">
+    <article class="post" >
+    <span class="post-meta">
+                  <div class="tag-tile">
+                      
+                      
+                      <a data-pjax href='/blog/tags/网站开发-css-js/' style='color:#D5D5D5'>网站开发 css js</a>
+                      
+                      
+                  </div>
+                <h1 class="post-title" style="margin: 14px 0;color:#50585D">从无到有的网页</h1>
 
-    
-    <article class="post">
+                    <div class="post-meta">
+                        Post on<span class="fa fa-clock-o"></span>
+                        <time datetime="2016-10-27T09:25:24.000Z"
+                              itemprop="datePublished">2016-10-27</time>
+                    </div>
+    </span>
 
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/电影-杂谈/'>电影 杂谈</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-            </h1>
+        <section class="post-content">
+            <p>  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是很深刻。接下来就来说一说我对页面的显示过程的一些浅显的理解。</p>
+<p>我要说的就从浏览器接收服务器消息开始吧。首先把浏览器接收到页面完全加载的过程一一列出来：</p>
+<p><strong>1、将文本信息解析成DOM</strong></p>
+<p><strong>2、计算样式构建渲染树</strong></p>
+<p><strong>3、页面布局</strong></p>
+<p><strong>4、页面绘制</strong></p>
+<p>这几条是我的理解页面显示的过程，我也看到过把第一条拆分成“将文本信息解析”和“构建DOM模型”的说法，由于我不太理解为什么要把“解析文本”和“构建DOM”分成两个步骤，于是我就按我的理解把步骤分为以上四条。首先来看第一条，把文本信息解析成DOM模型，浏览器从服务器获取到的页面结构信息是文本格式，当我们要的到的页面结构是节点对象组成的DOM模型，所以我们第一步就是要把文本解析成对象。再则就是计算样式构建渲染树，每个标签（这里之后统一用标签）如果要被看都需要有样式的支持，有的标签有默认的样式有的没有，我们也会给某些标签加上我们想要的样式，这些样式可能有很多层样式，这时候就需要计算出有用的一组样式。再然后是页面的布局，这时候就需要结合样式和标签的相互影响计算出标签的最终的位置和宽高、margin、padding、border等。最后是页面的渲染给标签加上颜色等样式。如果不好理解可以换一种方式去看这几个过程，首先是DOM模型，可以看成浏览器中开发工具中的查看元素看到的一层套一层的的形式，这个时候对象“存在摸不着”，再然后布局的时候对象就是一个个透明的框，每个框都有自己的位置，这个时候的对象“看的见摸不着”，最后是绘制之后，绘制就像是给透明的框上漆，然它有了丰富多彩的颜色，这时候的对象“看得见，摸得着”。</p>
+<p>页面显示过程的<strong>阻塞问题</strong>，这种阻塞发生在样式文件的加载和js文件的加载和执行上的，那么要阻塞是如何发生的。当一个css样式文件加载是碰到一个js文件，这时候如果不做任何处理的话js文件就需要一直等待css文件加载完成后在进行加载，然后执行。这样可能会导致页面显示显示过慢的问题，可以在script标签上加上async 和defer属性来使得js文件可以和css文件异步加载，其中asycn是H5中的新属性，而defer是用来兼容ie浏览器的，这种方式可以缩短文件加载时间但是却不能做到css加载和js执行的异步，js如果要执行就必须等到css加载完，在执行js的时候其实也是在阻塞，当js执行阻塞的时候会发生2、3、4过程，这个过程的对象是当前执行js之前已经构建好的DOM中的对象，在js执行时如果进行如果加入了大量的运算的话会导致页面加载缓慢，执行js是最好不要进行大量的运算，如果需要进行运算的话最好使用事件触发或者使用<code>setTimeout(function(){},0)</code>进行js异步执行。</p>
+<p>可能有人会说使用jq的<code>$(document).ready()</code>或者使用<code>window.onload</code>这两种方式来进行运算是不是就能解决页面加载时的阻塞问题了呢，答案是不能的，为啥呢，$(document).ready()作用是在DOM模型完全生成完执行的，但是这个时候页面其实还没有全部渲染完，所以也不能算是解决了js执行阻塞的。window.onload是不是就可以完美的做到避免页面加载的代码执行阻塞呢，我要郑重的说明，经过我的实验测试，得出来的答案也是不能的，如果一个页面是一个静态页面在第一次加载时由于需要从服务器中获取图片或者媒体文件所有window.onload会在页面渲染后执行，但是后面再加载页面时由于不需要再从服务器请求图片、媒体文件，window.onload会在DOM完全创建就会执行，执行时间与$(document).ready()相近，这是页面就需要等js代码执行完才会进行最后的渲染。</p>
+<p>起初，我在做页面的时候注意了主要是在功能的实现或者说是具体效果的实现，那时对页面的各方面性能并没有很关注，后来随着对前端知识的进一步学习越发对性能优化方面感兴趣，或许性能优化对于一个简单页面来说并没有太大的意义，但是对于一个复杂页面或者是一个平台及网站来说是非常非常重要的。</p>
 
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-24T09:31:23.000Z"
-                      itemprop="datePublished">2016-11-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                    大鱼这部电影想必有不少人看过,这个电影在03年上映的，已经是一部有些年纪的电影了，它改编自同名小说。我看这个电影也已经有很长一段时间了，只记得片里的父亲叫爱德华，儿子叫威尔，这部电影的主题我觉得有两个，一个是爱德华的奇幻冒险故事，这爱德华的冒险故事中有独眼女巫、巨人、狼人马戏团团长、连体姐妹和奇幻小镇等一系列奇幻事物，在观看这部电影的时候我一度以为故事是真实的。另一个主题是爱德华与威尔的父子情，这也算我在619父亲节安利这个电影
-                
-            </p>
-            
         </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/小游戏/'>小游戏</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-11-01T09:25:01.000Z"
-                      itemprop="datePublished">2016-11-01</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                数独
-2048
-插针小游戏
-聊天室
-五子棋
-
-                
-            </p>
+        <hr/>
+        <nav class="pagination" style="width:auto" role="pagination">
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-性能/'>网站开发 性能</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-29T10:01:48.000Z"
-                      itemprop="datePublished">2016-10-29</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                这篇博文的主题是重排与重绘，但是在此之前必须要先来说下页面的加载渲染过程，页面的加载过程在博文从无到有的网页中已经有讲到过，那么这里详细的就不讲，只简要的把页面加载过程列出来：
-1、将文本信息解析成DOM
-2、计算样式构建渲染树
-3、页面布局
-4、页面绘制
-重排和重绘与上面写的页面加载时的渲染过程有相似也有差异，首先来说重排，重排的过程是重新计算渲染树、重新布局、重新绘制，这个过程和页面加载的渲染过程基本类似，但是也有它们不同的地方，在
-                
-            </p>
+            <a data-pjax class="newer-posts" href="/blog/2016/10/29/重排与重绘/">← Prev Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-css-js/'>网站开发 css js</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/27/从无到有的网页/">从无到有的网页</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-27T09:25:24.000Z"
-                      itemprop="datePublished">2016-10-27</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                  “一个页面经过哪些步骤显示在浏览器中的？”，这个问题在我以前的面试中数次被问及，我当时大概是这么回答的：首先用户先点击链接或者直接在地址栏中输入网址，客户端发送请求，DNS服务器解析域名找到服务器，服务器接受请求消息做出应答，给客户端发送应答消息，浏览器接受消息并把接受到的数据解析成页面。BUT这些是一个前端面试官想要听到的答案吗，显然不是，这样的答案只能说明你在大学听了课，也说明作为一个前端的你对页面在浏览器显示的过程的理解还不是
-                
-            </p>
+            <a class="share-button" data-original-title title>Share this Post</a>
             
-        </section>
-    </article>
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/网站开发-随笔-html-css/'>网站开发 随笔 html css</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/10/24/随笔htmlcss滚动效果/">随笔(html+css滚动效果)</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-10-24T09:25:48.000Z"
-                      itemprop="datePublished">2016-10-24</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                该篇随笔主要是为了记录下我数次看到的一个页面滚动效果，这个滚动效果的特点是结构简单，只需要html+css即可实现完全不用写js代码，SO，我现在就安利一下，代码如下：
-&lt; style&gt;       *{            margin:0;            padding:0;        }        ul{            position: absolute;            width:
-                
-            </p>
+            <a data-pjax class="older-posts" href="/blog/2016/10/24/随笔htmlcss滚动效果/">Next Post →</a>
             
+        </nav>
+        <br/>
+        <br/>
+        <section id="comment">
+            <div id="comment-box"></div>
         </section>
+
+
     </article>
-    
-    <nav class="pagination" role="pagination">
-        
-        <span class="page-number">Page 1 of 6</span>
-        
-        <a data-pjax class="older-posts" href="/blog/archives/page/2/">Older Posts →</a>
-        
-    </nav>
 </main>
 
 
