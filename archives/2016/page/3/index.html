@@ -43,10 +43,6 @@
                                 <div class="mp-scroll">
                                 
                                 <li class="search-archive-li mp-pjax">
-                                    <a href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-                                </li>
-                                
-                                <li class="search-archive-li mp-pjax">
                                     <a href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
                                 </li>
                                 
@@ -120,6 +116,10 @@
                                 
                                 <li class="search-archive-li mp-pjax">
                                     <a href="/blog/2016/07/28/客户端Excel浏览与下载/">客户端Excel浏览与下载</a>
+                                </li>
+                                
+                                <li class="search-archive-li mp-pjax">
+                                    <a href="/blog/2016/07/24/电影大鱼/">电影《大鱼》</a>
                                 </li>
                                 
                                 <li class="search-archive-li mp-pjax">
@@ -300,8 +300,6 @@
         <div id="pjax">
             <div class="pjax-hidden" style="display: none">
                 
-                    <a  data-pjax href="/blog/2016/11/24/电影大鱼/">电影《大鱼》</a>
-                
                     <a  data-pjax href="/blog/2016/11/01/制作小游戏/">自制小游戏</a>
                 
                     <a  data-pjax href="/blog/2016/10/29/重排与重绘/">重排与重绘</a>
@@ -339,6 +337,8 @@
                     <a  data-pjax href="/blog/2016/08/02/AngularJs入门/">AngularJs入门</a>
                 
                     <a  data-pjax href="/blog/2016/07/28/客户端Excel浏览与下载/">客户端Excel浏览与下载</a>
+                
+                    <a  data-pjax href="/blog/2016/07/24/电影大鱼/">电影《大鱼》</a>
                 
                     <a  data-pjax href="/blog/2016/07/22/优雅的Sublime-Text/">优雅的Sublime Text</a>
                 
@@ -430,36 +430,6 @@
   
 <main class="content" role="main">
 
-    
-    <article class="post">
-
-        <header class="post-header">
-            <div class="tag-tile">
-                
-                
-                <a data-pjax href='/blog/tags/杂谈-电影/'>杂谈 电影</a>
-                
-                
-                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
-            </div>
-            <h1 class="post-title"><a data-pjax href="/blog/2016/09/19/我的电影世界/">我的电影世界</a>
-            </h1>
-
-            <div class="post-meta">
-                Post on<span class="fa fa-clock-o"></span>
-                <time datetime="2016-09-19T09:27:12.000Z"
-                      itemprop="datePublished">2016-09-19</time>
-            </div>
-        </header>
-        <section class="post-excerpt">
-            <p>
-                
-                电影一直是我最重要的爱好之一，记得小时候没有网络也没有碟片机的时候，想要看电影都只能等到村里集体放电影的时候，那个时候应该只有四五岁，到那个时候全家人一起出动，打着手电筒早早就去电影放映点找个好位置，小孩子通常会拿着大人给的一角两角钱区小摊上买糖吃，然后坐在一银幕非常近的地方坐下，看着大银幕上不断变幻的光影，那时候小不知道电影里面讲的是什么东西，只记得那时候是快乐的。再到后来家里面有了碟片机，我就会去卖盗版光碟的店里面租碟片看，印象最深
-                
-            </p>
-            
-        </section>
-    </article>
     
     <article class="post">
 
@@ -576,6 +546,36 @@
             <p>
                 
                 在前段时间我做个过一个用canvas做的的五子棋，实现了五子棋的下子功能和对五子棋结果判断，判断主要是看统一方棋子一条线有没有达到五颗，如果有一方达到五颗，但是这样也只能在同一个主机上进行游戏，这样游戏的可行性不强，不方便双人对局。后来我又做过一个socket的聊天室demo，这个聊天室demo可以实现多人聊天，也可以实现单对单的聊天，我寻思着我是不是可以把这两样东西结合在一起，于是我把这两个的代码进行了整合，实现了一个可以双人在线游戏
+                
+            </p>
+            
+        </section>
+    </article>
+    
+    <article class="post">
+
+        <header class="post-header">
+            <div class="tag-tile">
+                
+                
+                <a data-pjax href='/blog/tags/网站开发-socket/'>网站开发 socket</a>
+                
+                
+                <span class="fa fa-bookmark" style="float:right;color:#f39c12"></span>
+            </div>
+            <h1 class="post-title"><a data-pjax href="/blog/2016/08/12/socket聊天室/">socket聊天室</a>
+            </h1>
+
+            <div class="post-meta">
+                Post on<span class="fa fa-clock-o"></span>
+                <time datetime="2016-08-12T09:29:08.000Z"
+                      itemprop="datePublished">2016-08-12</time>
+            </div>
+        </header>
+        <section class="post-excerpt">
+            <p>
+                
+                soclet在俗称“套接字”，它是连接应用层和传输层之间的桥梁，大概是把，反正百度上是这么说的，一般我们要从服务器上获取到数据图片或者文件通常是从浏览器端主动发出请求后服务器做出响应，但是通常服务器不能主动的向浏览器发送消息，而socket帮我们解决了这个问题，在网站开发中这个技术最常用的场景是做即时聊天功能，通常一些购物网站上会有这样的聊天功能，比如淘宝网页的旺旺，在学习socket的时候我做了一个聊天室，这个聊天室实现了公共聊天和私
                 
             </p>
             
